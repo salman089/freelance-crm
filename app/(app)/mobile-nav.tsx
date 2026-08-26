@@ -3,20 +3,20 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  LayoutDashboard,
-  FolderKanban,
+  SquaresFour,
+  FolderOpen,
   Clock,
   Users,
-  Settings,
-} from "lucide-react";
+  Gear,
+} from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { href: "/dashboard", label: "Home", icon: LayoutDashboard },
-  { href: "/projects", label: "Projects", icon: FolderKanban },
+  { href: "/dashboard", label: "Home", icon: SquaresFour },
+  { href: "/projects", label: "Projects", icon: FolderOpen },
   { href: "/time", label: "Track", icon: Clock },
   { href: "/clients", label: "Clients", icon: Users },
-  { href: "/settings", label: "Settings", icon: Settings },
+  { href: "/settings", label: "Settings", icon: Gear },
 ];
 
 export function MobileNav() {
@@ -35,7 +35,7 @@ export function MobileNav() {
               active ? "text-foreground" : "text-muted-foreground"
             )}
           >
-            <Icon className="size-5" />
+            <Icon className="size-5" weight={active ? "bold" : "regular"} />
             {label}
           </Link>
         );

@@ -1,10 +1,12 @@
 import { redirect } from "next/navigation";
-import { LogOut } from "lucide-react";
+import { SignOut } from "@phosphor-icons/react/dist/ssr";
 import { auth, signOut } from "@/auth";
+import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { SidebarNav } from "./sidebar-nav";
 import { MobileNav } from "./mobile-nav";
+import { GlobalTimer } from "./global-timer";
 
 export default async function AppLayout({
   children,
@@ -15,6 +17,26 @@ export default async function AppLayout({
   if (!session) redirect("/");
 
   const displayName = session.user.name || session.user.email;
+
+  const runningEntry = await prisma.timeEntry.findFirst({
+    where: { userId: session.user.id, endedAt: null },
+    select: {
+      id: true,
+      startedAt: true,
+      description: true,
+      project: { select: { id: true, name: true } },
+    },
+  });
+
+  const globalTimerEntry = runningEntry
+    ? {
+        id: runningEntry.id,
+        projectId: runningEntry.project.id,
+        projectName: runningEntry.project.name,
+        startedAt: runningEntry.startedAt.toISOString(),
+        description: runningEntry.description,
+      }
+    : null;
 
   const signOutForm = (
     <form
@@ -29,7 +51,7 @@ export default async function AppLayout({
         size="sm"
         className="w-full justify-start gap-2.5 text-muted-foreground"
       >
-        <LogOut className="size-4" />
+        <SignOut className="size-4" weight="bold" />
         Sign out
       </Button>
     </form>
@@ -52,14 +74,18 @@ export default async function AppLayout({
 
         <SidebarNav />
 
-        <div className="mt-auto pt-4">{signOutForm}</div>
+        <div className="mt-auto space-y-3 pt-4">
+          <GlobalTimer runningEntry={globalTimerEntry} />
+          {signOutForm}
+        </div>
       </aside>
 
-      <header className="fixed inset-x-0 top-0 z-40 flex items-center justify-between border-b border-sidebar-border bg-sidebar px-4 py-3 md:hidden">
-        <p className="font-heading text-base font-semibold text-sidebar-foreground">
+      <header className="fixed inset-x-0 top-0 z-40 flex items-center gap-2 border-b border-sidebar-border bg-sidebar px-4 py-3 md:hidden">
+        <p className="shrink-0 font-heading text-base font-semibold text-sidebar-foreground">
           Workbase
         </p>
-        <div className="flex items-center gap-1">
+        <GlobalTimer runningEntry={globalTimerEntry} className="flex-1" />
+        <div className="ml-auto flex shrink-0 items-center gap-1">
           <ThemeToggle className="text-muted-foreground" />
           {signOutForm}
         </div>

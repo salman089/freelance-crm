@@ -1,4 +1,4 @@
-import { Download } from "lucide-react";
+import { DownloadSimple } from "@phosphor-icons/react/dist/ssr";
 import { requireUserId } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
@@ -52,7 +52,7 @@ export default async function SettingsPage() {
                 nativeButton={false}
                 render={<a href="/api/export" />}
               >
-                <Download className="size-4" />
+                <DownloadSimple className="size-4" weight="bold" />
                 Export data
               </Button>
             </CardContent>

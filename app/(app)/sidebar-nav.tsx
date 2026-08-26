@@ -2,21 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  LayoutDashboard,
-  Users,
-  FolderKanban,
-  Clock,
-  Settings,
-} from "lucide-react";
+import { SquaresFour, Users, FolderOpen, Clock, Gear } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/dashboard", label: "Dashboard", icon: SquaresFour },
   { href: "/clients", label: "Clients", icon: Users },
-  { href: "/projects", label: "Projects", icon: FolderKanban },
+  { href: "/projects", label: "Projects", icon: FolderOpen },
   { href: "/time", label: "Time", icon: Clock },
-  { href: "/settings", label: "Settings", icon: Settings },
+  { href: "/settings", label: "Settings", icon: Gear },
 ];
 
 export function SidebarNav() {
@@ -37,7 +31,7 @@ export function SidebarNav() {
                 : "text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
             )}
           >
-            <Icon className="size-4" />
+            <Icon className="size-4" weight="bold" />
             {label}
           </Link>
         );

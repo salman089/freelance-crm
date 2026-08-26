@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Clock, Users, FolderKanban } from "lucide-react";
+import { Clock, Users, FolderOpen } from "@phosphor-icons/react/dist/ssr";
 import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const features = [
   {
@@ -12,7 +13,7 @@ const features = [
       "Keep every client's contact details and notes in one organized place.",
   },
   {
-    icon: FolderKanban,
+    icon: FolderOpen,
     title: "Project tracking",
     description:
       "Group work by client and project, and keep tabs on what's active.",
@@ -33,9 +34,12 @@ export default async function Home() {
     <div className="flex min-h-full flex-1 flex-col">
       <header className="flex items-center justify-between border-b border-border px-6 py-4 sm:px-10">
         <p className="font-heading text-lg font-semibold">Workbase</p>
-        <Button variant="outline" nativeButton={false} render={<Link href="/login" />}>
-          Log in
-        </Button>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <Button variant="outline" nativeButton={false} render={<Link href="/login" />}>
+            Log in
+          </Button>
+        </div>
       </header>
 
       <main className="flex flex-1 flex-col">
@@ -60,7 +64,7 @@ export default async function Home() {
           <div className="mx-auto grid w-full max-w-5xl gap-8 px-6 py-16 sm:grid-cols-3 sm:px-10">
             {features.map(({ icon: Icon, title, description }) => (
               <div key={title} className="space-y-2">
-                <Icon className="size-5" />
+                <Icon className="size-5" weight="bold" />
                 <h2 className="font-heading text-lg font-medium">{title}</h2>
                 <p className="text-sm text-muted-foreground">{description}</p>
               </div>
